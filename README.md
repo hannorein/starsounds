@@ -2,12 +2,14 @@
 
 Jupyter notebook extension which adds beeping sounds to your notebook.
 
-##Installation
+## Installation
 
-Download, the install with 
+Download. Then install with 
 
     jupyter nbextension install [path to starsounds]
     jupyter nbextension enable starsounds/main
+
+You need to push the volume button in the notebook toolbar to enable the sounds.
 
 ## Author
 
