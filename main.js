@@ -69,6 +69,15 @@ define([
         $([Jupyter.events]).on('kernel_starting.Kernel',function () {
         });
         
+        $([Jupyter.events]).on('edit_mode.Cell',function () {
+          console.log("edit_mode");
+          if (newcell == true){
+              newcell = false;
+          }else{
+              audio.src = requirejs.toUrl("./computerbeep_11.mp3");
+              audio.play();
+          }
+        });
         $([Jupyter.events]).on('select.Cell',function () {
           console.log("select");
           if (newcell == true){
