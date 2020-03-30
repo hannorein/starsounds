@@ -16,6 +16,7 @@ define([
   var start_time = current_time();
   var audio = new Audio();
   var newcell = false; 
+  var enabled = false;
 
   var add_permissions_list = function () {
     var ipython_toolbar = $('#maintoolbar-container');
@@ -44,7 +45,7 @@ define([
       $(Jupyter.toolbar.add_buttons_group([
         Jupyter.keyboard_manager.actions.register ({
           'help'   : 'Enable Sound',
-          'icon'   : 'fa-volume-up',
+          'icon'   : 'fa-rocket',
           'handler': ask_permission,
         },'enable-sound', 'notify')
       ])).find('.btn').attr('id', 'starsound-button');
@@ -52,9 +53,14 @@ define([
   };
 
   var ask_permission = function () {
-      console.log("ask");
-      audio.src = requirejs.toUrl("./computerbeep_1.mp3");
-      audio.play();
+      var button = $('#starsound-button').find("i").toggleClass("fa-rocket").toggleClass("fa-volume-up");
+      if (enabled == true){
+          enabled = false;
+      }else{
+          enabled = true;
+          audio.src = requirejs.toUrl("./computerbeep_1.mp3");
+          audio.play();
+      }
       //add_permissions_list();
   };
 
@@ -70,43 +76,51 @@ define([
         });
         
         $([Jupyter.events]).on('edit_mode.Cell',function () {
-          console.log("edit_mode");
           if (newcell == true){
               newcell = false;
           }else{
-              audio.src = requirejs.toUrl("./computerbeep_11.mp3");
-              audio.play();
+              if (enabled == true){
+                  audio.src = requirejs.toUrl("./computerbeep_11.mp3");
+                  audio.play();
+              }
           }
         });
         $([Jupyter.events]).on('select.Cell',function () {
-          console.log("select");
           if (newcell == true){
               newcell = false;
           }else{
-              audio.src = requirejs.toUrl("./computerbeep_54.mp3");
-              audio.play();
+              if (enabled == true){
+                  audio.src = requirejs.toUrl("./computerbeep_13.mp3");
+                  audio.play();
+              }
           }
         });
         $([Jupyter.events]).on('create.Cell',function () {
-          console.log("create");
-          audio.src = requirejs.toUrl("./computerbeep_31.mp3");
-          audio.play();
+          if (enabled == true){
+              audio.src = requirejs.toUrl("./computerbeep_31.mp3");
+              audio.play();
+          }
           newcell = true;
         });
         $([Jupyter.events]).on('delete.Cell',function () {
-          console.log("delete");
-          audio.src = requirejs.toUrl("./computerbeep_20.mp3");
-          audio.play();
+          if (enabled == true){
+              audio.src = requirejs.toUrl("./computerbeep_20.mp3");
+              audio.play();
+          }
         });
 
         $([Jupyter.events]).on('kernel_busy.Kernel',function () {
-          audio.src = requirejs.toUrl("./computerbeep_4.mp3");
-          audio.play();
+          if (enabled == true){
+            audio.src = requirejs.toUrl("./computerbeep_4.mp3");
+            audio.play();
+          }
         });
 
         $([Jupyter.events]).on('kernel_idle.Kernel',function () {
-          audio.src = requirejs.toUrl("./computerbeep_25.mp3");
-          audio.play();
+          if (enabled == true){
+            audio.src = requirejs.toUrl("./computerbeep_25.mp3");
+            audio.play();
+          }
         });
     });
   };
